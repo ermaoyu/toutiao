@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>bootstrap案例</title>
+    <!--用百度的静态资源库的cdn安装bootstrap环境-->
+    <!-- Bootstrap 核心 CSS 文件 -->
+    <link href="http://apps.bdimg.com/libs/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <!--font-awesome 核心我CSS 文件-->
+    <link href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- 在bootstrap.min.js 之前引入 -->
+    <!-- Bootstrap 核心 JavaScript 文件 -->
+    <script src="/bootstrap/js/bootstrap.min.js"></script>
+    <!--jquery.validate-->
+    <script src="http://static.runoob.com/assets/jquery-validation-1.14.0/lib/jquery.js"></script>
+    <script src="http://static.runoob.com/assets/jquery-validation-1.14.0/dist/jquery.validate.min.js"></script>
+    <style type="text/css">
+        body{
+            background: url("static/static.login/img/5.jpg");
+            background-size:cover;
+            /*animation-name:myfirst;*/
+            /*animation-duration:12s;*/
+            /*!*变换时间*!*/
+            /*animation-delay:2s;*/
+            /*!*动画开始时间*!*/
+            /*animation-iteration-count:infinite;*/
+            /*!*下一周期循环播放*!*/
+            /*animation-play-state:running;*/
+            /*!*动画开始运行*!*/
+        }
+        /*@keyframes myfirst*/
+        /*{*/
+            /*0%   {background:url("../static/static.login/img/1.jpg");}*/
+            /*34%  {background:url("../static/static.login/img/2.jpg");}*/
+            /*67%  {background:url("../static/static.login/img/3.jpg");}*/
+            /*100% {background:url("../static/static.login/img/1.jpg");}*/
+        /*}*/
+        .form{background: rgba(255,255,255,0.2);width:400px;margin:120px auto;}
+        /*阴影*/
+        .fa{display: inline-block;top: 27px;left: 6px;position: relative;color: #ccc;}
+        input[type="text"],input[type="password"]{padding-left:26px;}
+    </style>
+    <style>
+        .error{
+            color:red;
+        }
+    </style>
+    <script>
+        $().ready(function() {
+            $("#register_form").validate({
+                rules: {
+                    username: "required",
+                    username:{
+                        required:true,
+                        minlength:2
+                    },
+                    password: {
+                        required: true,
+                        minlength: 3
+                    },
+                    rpassword: {
+                        required: true,
+                        minlength: 3,
+                        equalTo: "#password"
+                    },
+                    email: {
+                        required: true,
+                        email: true
+                    },
+                    userkap:{
+                        required:true,
+                        minlength:6
+                    }
+                },
+                messages: {
+                    username: "请输入姓名",
+                    username: {
+                        required: "请输入用户名",
+                        minlength: "用户名必需由两个字母以上组成"
+                    },
+                    password: {
+                        required: "请输入密码",
+                        minlength: "密码不能小于3个字 符"
+                    },
+                    rpassword: {
+                        required: "请输入密码",
+                        minlength: "密码不能小于3个字 符",
+                        equalTo: "两次密码不一样"
+                    },
+                    email: {
+                        required: "邮箱不能为空",
+                        email: "请输入有效邮箱"
+                    },
+                    userkap:{
+                        required:"验证码不能为空",
+                        minlength:"请输入长度为6的验证码"
+                    }
+
+                }
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        // $(function () {
+        //     $("input[name='second']").click(fun($("#second")));
+        // });
+        // function fun(obj) {
+        //     alert(obj.value);
+        // }
+        //用ajax提交到后台的发送短信接口
+        function sendyzm(obj){
+            var email = $("#email").val();
+            var name = $("#username").val();
+            alert(email);
+            alert(name);
+                $.ajax({
+                    url:"http://127.0.0.1:8080/reg/kapther",
+                    data:{email:email,username:name},
+                    timeout:6000,
+                    dataType:"json",
+                    type:"post",
+                    async : false,
+                    cache : false,
+                    success:function(res){
+                        debugger;
+                        if(res){
+                            alert("验证码发送成功");
+                        }else{
+
+                        }
+                    },
+                    error:function(){
+                        alert("验证码发送失败");
+                    }
+                })
+                setTime(obj);//开始倒计时
+        }
+        //60s倒计时实现逻辑
+        var countdown=60;
+        function setTime(obj) {
+            if (countdown == 0) {
+                obj.removeAttribute("disabled");
+                obj.value="免费获取验证码";
+                countdown = 60;
+                return;
+            } else {
+                obj.setAttribute("disabled", true);
+                obj.value="重新发送(" + countdown + ")";
+                countdown--;
+            }
+            setTimeout(function() {
+                    setTime(obj) }
+                ,1000)
+        }
+    </script>
+</head>
+<body>
+<form   id="register_form" method="get" action="/reg/">
+    <fieldset>
+    <div class="container">
+        <div class="form row">
+            <div class="form-horizontal col-md-offset-3" >
+                <h3 class="form-title" align="container">Reg to your account</h3>
+                <div class="col-md-9">
+                    <div class="form-group">
+                        <i class="fa fa-user fa-lg"></i>
+                        <input class="form-control required" type="text" placeholder="Username" id="username" name="username" autofocus="autofocus" maxlength="20"/>
+                    </div>
+                    <div class="form-group">
+                        <i class="fa fa-lock fa-lg" ></i>
+                        <input class="form-control required" type="password" placeholder="Password" id="password" name="password" maxlength="8"/>
+                    </div>
+                    <div class="form-group">
+                        <i class="fa fa-check fa-lg"></i>
+                        <input class="form-control required" type="password" placeholder="Re-type Your Password" id="rpassword" name="rpassword" maxlength="8"/>
+                    </div>
+                    <div class="form-group">
+                        <i class="fa fa-envelope fa-lg"></i>
+                        <input class="form-control social-share-button-email pull-right" type="text" placeholder="Email" id="email" name="email"/>
+                        <input type="button" id="second" onclick="sendyzm(this)"  name="second" class="btn btn-primary pull-left" value="免费获取验证码"/>
+                    </div>
+                    <div class="form-group">
+                        <i class="fa fa-envelope fa-lg"></i>
+                        <input class="form-control required " type="text" placeholder="验证码" id="userkap" name="userkap" maxlength="6"/>
+                    </div>
+                    <div class="form-group col-md-offset-9">
+                        <input type="submit" class="btn btn-info pull-right" id="submit" value="Sign Up"/>
+                        <!--<button type="submit" class="btn btn-success pull-right" name="submit">Sign Up</button>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </fieldset>
+</form>
+
+</body>
+</html>

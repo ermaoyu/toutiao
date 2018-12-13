@@ -1,0 +1,29 @@
+<html>
+<body>
+<pre>
+    Hello World
+    ## 这里是注释,都看不到
+    #*
+        这里是注释块,都看不到
+    *#
+    $!{value1}
+
+    #foreach($color in $colors)
+    Color $!{foreach.index}/$!{foreach.count}:$!{color}
+    #end
+
+    #foreach($kv in $map.entrySet())
+        Number $!{foreach.index}/$!{foreach.count}:$!{kv.key}
+    #end
+
+    User:$!{user.name}
+    User:$!{user.getName()}
+
+    $!{colors.size()}
+
+    #set($title = "ermaoyu")
+    Includ: #include("header.vm")<br>
+    Parse;#parse("header.vm")
+</pre>
+</body>
+</html>
